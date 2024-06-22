@@ -1,0 +1,77 @@
+import groovy.json.JsonSlurper
+
+def getFtpPublishProfile(def publishProfilesJson) {
+  def pubProfiles = new JsonSlurper().parseText(publishProfilesJson)
+  for (p in pubProfiles)
+    if (p['publishMethod'] == 'FTP')
+      return [url: p.publishUrl, username: p.userName, password: p.userPWD]
+}
+
+node {
+   def mvnHome = tool 'M3'
+
+   stage('Checkout') { 
+      git 'https://github.com/maping/java-maven-calculator-web-app.git'
+   }
+   
+   stage('Build') {
+      if (isUnix()) {
+         sh "'${mvnHome}/bin/mvn' clean package"
+      } else {
+         bat(/"${mvnHome}\bin\mvn" clean package/)
+      }
+   }
+   
+   stage('Deploy') {
+      def resourceGroup = 'mapingAppServiceRG' 
+      def webAppName = 'mapingcalculator'
+      
+      if (isUnix()) {
+        // login Azure
+        withCredentials([azureServicePrincipal('40d0390e-a7d6-46ca-92c4-213b1192044f')]) {
+        sh '''
+          //az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+          //az account set -s $AZURE_SUBSCRIPTION_ID
+          az login --service-principal -u ce28f6fd-b6ca-4921-b0a0-063bb7f55f98 -p Azure12345678! -t 00a8389b-6c91-4841-8c0a-60502f7dda74
+          az account set -s ee75423d-af54-4c03-b9b6-dff79b5daaf4
+        '''
+        }
+
+        // get publish settings
+        def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
+        def ftpProfile = getFtpPublishProfile pubProfilesJson
+
+        // upload package
+        sh "curl -T target/calculator.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
+
+        // log out
+        sh 'az logout'
+        
+      } else {
+        // login Azure
+        withCredentials([azureServicePrincipal('029310de-62cf-45f9-a62b-3f56df679693')]) {
+        bat '''
+          //az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID
+          //az account set -s $AZURE_SUBSCRIPTION_ID
+          az login --service-principal -u ce28f6fd-b6ca-4921-b0a0-063bb7f55f98 -p Azure12345678! -t 00a8389b-6c91-4841-8c0a-60502f7dda74
+          az account set -s ee75423d-af54-4c03-b9b6-dff79b5daaf4
+        '''
+        }
+
+        // get publish settings
+        def pubProfilesJson = sh script: "az webapp deployment list-publishing-profiles -g $resourceGroup -n $webAppName", returnStdout: true
+        def ftpProfile = getFtpPublishProfile pubProfilesJson
+
+        // upload package
+        bat '''
+          "curl -T target/calculator.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
+        '''
+        
+        // log out
+        bat '''
+          az logout
+        '''
+      }     
+   }
+}
+   

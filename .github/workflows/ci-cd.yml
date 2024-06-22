@@ -91,9 +91,9 @@ jobs:
       with:
         context: .
         registry: ${{ steps.login-ecr.outputs.registry }}
-        repository: ${{ steps.login-ecr.outputs.registry }}/java_gameoflife
+        repository: ${{ steps.login-ecr.outputs.registry }}/calculator
         push: true
-        tags: ${{ steps.login-ecr.outputs.registry }}/java_gameoflife:latest
+        tags: ${{ steps.login-ecr.outputs.registry }}/calculator:latest
         add_git_labels: true
         tag_with_ref: true
 
