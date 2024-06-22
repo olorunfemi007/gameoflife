@@ -66,7 +66,7 @@ resource "aws_eks_cluster" "eks_deploy" {
   role_arn = aws_iam_role.cluster_iam_role.arn
   vpc_config {
     security_group_ids = [aws_security_group.java_eks_cluster.id]
-    subnet_ids         =  aws_subnet.private[*].id 
+    subnet_ids         =  aws_subnet.public[*].id 
   }
 
   depends_on = [

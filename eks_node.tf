@@ -97,7 +97,7 @@ resource "aws_eks_node_group" "java_app_ng" {
   cluster_name    = aws_eks_cluster.eks_deploy.name
   node_group_name = "java_app_ng"
   node_role_arn   = aws_iam_role.node_iam_role.arn
-  subnet_ids      = aws_subnet.private[*].id
+  subnet_ids      = aws_subnet.public[*].id
   instance_types = [var.instance_type[0]]
   remote_access{
       ec2_ssh_key = var.key_pair
