@@ -4,6 +4,7 @@
     <groupId>com.wakaleo.gameoflife</groupId>
     <artifactId>gameoflife-web</artifactId>
     <packaging>war</packaging>
+    <version>1.0</version>
     <name>gameoflife-web</name>
 
     <properties>
