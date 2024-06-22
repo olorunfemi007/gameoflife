@@ -21,7 +21,7 @@ spec:
         - name: ecrpullsecret
       containers:
         - name: java-app-container
-          image: 211125745138.dkr.ecr.us-east-1.amazonaws.com/java_app:latest
+          image: 211125745138.dkr.ecr.us-east-1.amazonaws.com/java_gameoflife:latest
           ports:
             - containerPort: 8080
           # resources:

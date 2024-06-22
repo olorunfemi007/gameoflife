@@ -1,5 +1,5 @@
 resource "aws_ecr_repository" "java_app_repo" {
-  name = "java_app"
+  name = "java_gameoflife"
   image_scanning_configuration {
     scan_on_push = true
   }
