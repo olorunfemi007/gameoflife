@@ -66,8 +66,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Analysis with Sonarcloud
-      run: mvn -B sonar:sonar -Dsonar.projectKey=olorunfemi007_java-deploy -Dsonar.host.url=https://sonarcloud.io \-Dsonar.login=${{ secrets.SONAR_TOKEN }} --file pom.xml
-
+      run: mvn -B sonar:sonar --file pom.xml
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Move WAR file to build context
