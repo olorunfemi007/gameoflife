@@ -21,6 +21,12 @@ spec:
         - name: ecrpullsecret
       containers:
         - name: java-app-container
-          image: 211125745138.dkr.ecr.us-east-1.amazonaws.com/calculator:latest
+          image: ${SECRET_ACC}.dkr.ecr.us-east-1.amazonaws.com/calculator:latest
+          env:
+        - name: SECRET_ACC
+          valueFrom:
+            secretKeyRef:
+              name: account_info
+              key: account_id
           ports:
             - containerPort: 8080
