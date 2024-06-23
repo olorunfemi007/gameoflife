@@ -47,6 +47,25 @@ resource "aws_instance" "public_instance" {
   }
 }
 
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "tls_private_key" "pk" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "my_key" {
+  key_name   = var.key_pair
+  public_key = tls_private_key.pk.public_key_openssh  # Path to your public key file
+}
+
+resource "local_file" "private_key_pem" {
+  content  = tls_private_key.pk.private_key_pem
+  filename = "${path.module}/key/${var.key_pair}.pem"
+}
+
 
 
 
