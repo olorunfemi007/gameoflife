@@ -26,7 +26,7 @@ spec:
         - name: SECRET_ACC
           valueFrom:
             secretKeyRef:
-              name: account_info
-              key: account-id
+              name: account-info
+              key: account_id
           ports:
             - containerPort: 8080
