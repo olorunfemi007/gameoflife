@@ -66,7 +66,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Analysis with Sonarcloud
-      run: mvn -B clean package sonar:sonar -D SONAR_TOKEN= ${{ secrets.SONAR_TOKEN }} --file pom.xml
+      run: mvn -B clean package sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} --file pom.xml
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
