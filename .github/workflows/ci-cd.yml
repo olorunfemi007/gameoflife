@@ -1,29 +1,19 @@
-name: Java CI with Maven
+name: Java CI with Terraform-Sonarcloud-Maven-ECR-EKS
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:
-    inputs:
-      job_type:
-        description: 'Type of TF Job'
-        required: true
-        default: 'apply'
-        type: choice
-        options:
-          - apply
-          - destroy
 
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       SECRET_NAME: 'ecrpullsecret'
-      DOCKER_ECR: '211125745138.dkr.ecr.us-east-1.amazonaws.com'
-      DOCKER_USERNAME: 'AWS'
-      DOCKER_EMAIL: 'emmidim01@gmail.com'
+      ECR_URL: '211125745138.dkr.ecr.us-east-1.amazonaws.com'
+      ECR_USERNAME: 'AWS'
+      ECR_EMAIL: 'emmidim01@gmail.com'
 
     steps:
     - name: Checkout Repo
@@ -46,6 +36,12 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run: terraform init
+    
+    - name: Terraform Validate
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      run: terraform validate -lock=false
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
@@ -58,7 +54,7 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      run: terraform destroy --auto-approve --lock=false
+      run: terraform apply --auto-approve --lock=false
 
     - name: Set up JDK 17
       uses: actions/setup-java@v1
@@ -113,7 +109,7 @@ jobs:
           echo "Secret $SECRET_NAME does not exist"
           DOCKER_SECRET=$(aws ecr --region=us-east-1 get-authorization-token --output text --query authorizationData[].authorizationToken | base64 -d | cut -d: -f2)
           echo "Login Result: $DOCKER_SECRET"
-          kubectl create secret docker-registry $SECRET_NAME --docker-server=$DOCKER_ECR --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_SECRET --docker-email=$DOCKER_EMAIL
+          kubectl create secret docker-registry $SECRET_NAME --docker-server=$ECR_URL --docker-username=$ECR_USERNAME --docker-password=$DOCKER_SECRET --docker-email=$ECR_EMAIL
         fi
 
     - name: Deploy to EKS
