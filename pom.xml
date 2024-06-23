@@ -16,8 +16,8 @@
         <jersey-version>2.27</jersey-version>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>olorunfemi007</sonar.organization>
-        <sonar.projectKey>olorunfemi007_calculator-web-app</sonar.projectKey>
-        <sonar.login>${env.SONAR_TOKEN}</sonar.login>
+        <sonar.projectKey>olorunfemi007_java-deploy</sonar.projectKey>
+        <sonar.login>fdfe77273794e4415daf8d540d30a212a8e5836d</sonar.login>
     </properties>
 
     <scm>
