@@ -43,7 +43,7 @@ resource "aws_instance" "public_instance" {
   subnet_id = element(aws_subnet.public.*.id, count.index)
   vpc_security_group_ids = [aws_security_group.public_sg.id] 
   tags = {
-    Name = "PrivateInstance${count.index + 1}"
+    Name = "PublicInstance${count.index + 1}"
   }
 }
 
