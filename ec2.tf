@@ -47,9 +47,6 @@ resource "aws_instance" "public_instance" {
   }
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
 
 resource "tls_private_key" "pk" {
   algorithm = "RSA"
