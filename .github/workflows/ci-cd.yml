@@ -65,8 +65,7 @@ jobs:
         java-version: '14'
         distribution: 'temurin'
         cache: maven
-    # - name: Analyze
-    #   run: mvn -DSONAR_TOKEN=${{ secrets.SONAR_TOKEN }} -B verify sonar:sonar --file pom.xml
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Move WAR file to build context

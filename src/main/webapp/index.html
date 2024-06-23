@@ -1,9 +1,129 @@
-<html>
-    <head>
-        <title>HTML - Hello World</title>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <div>Hello, Azure! 2018-10-01 02</div>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+        }
+        .display {
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: right;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            font-size: 1.5em;
+            padding: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #eee;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ddd;
+        }
+        button.operator {
+            background-color: #ff9500;
+            color: white;
+        }
+        button.operator:hover {
+            background-color: #e08b00;
+        }
+        button.equal {
+            background-color: #34c759;
+            color: white;
+            grid-column: span 2;
+        }
+        button.equal:hover {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="deleteLast()">DEL</button>
+            <button onclick="appendOperator('/')">/</button>
+            <button onclick="appendOperator('*')">*</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendOperator('-')">-</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendOperator('+')">+</button>
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="calculate()" class="equal">=</button>
+            <button onclick="appendNumber(0)" class="zero">0</button>
+            <button onclick="appendNumber('.')">.</button>
+        </div>
+    </div>
+
+    <script>
+        let displayElement = document.getElementById('display');
+        let displayValue = '';
+
+        function clearDisplay() {
+            displayValue = '';
+            displayElement.innerText = '0';
+        }
+
+        function deleteLast() {
+            displayValue = displayValue.slice(0, -1);
+            displayElement.innerText = displayValue || '0';
+        }
+
+        function appendNumber(number) {
+            displayValue += number;
+            displayElement.innerText = displayValue;
+        }
+
+        function appendOperator(operator) {
+            if (displayValue === '' && operator !== '-') return;
+            if (/[+\-*/]$/.test(displayValue)) return;
+            displayValue += operator;
+            displayElement.innerText = displayValue;
+        }
+
+        function calculate() {
+            try {
+                displayValue = eval(displayValue).toString();
+                displayElement.innerText = displayValue;
+            } catch (error) {
+                displayElement.innerText = 'Error';
+                displayValue = '';
+            }
+        }
+    </script>
+
+</body>
 </html>
