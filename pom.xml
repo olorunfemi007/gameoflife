@@ -14,10 +14,10 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <jersey-version>2.27</jersey-version>
-        <my.env.var>${env.SONAR_TOKEN}</my.env.var>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>olorunfemi007</sonar.organization>
         <sonar.projectKey>olorunfemi007_calculator-web-app</sonar.projectKey>
+        <my.env.var>${env.SONAR_TOKEN}</my.env.var>
         <sonar.token>${my.env.var}</sonar.token>
     </properties>
 
