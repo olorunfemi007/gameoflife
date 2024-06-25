@@ -13,6 +13,7 @@ jobs:
       SECRET_NAME: 'ecrpullsecret'
       ECR_USERNAME: 'AWS'
       ECR_EMAIL: 'emmidim01@gmail.com'
+      SONAR_HOST_URL: 'https://sonarcloud.io'
 
     steps:
     - name: Checkout Repo
@@ -62,15 +63,8 @@ jobs:
         distribution: 'temurin'   # ignore 
         cache: maven
     - name: Analysis with Sonarcloud
-      uses: sonarsource/sonarqube-scan-action@master
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      with:
-        args: |
-          -Dsonar.projectKey=olorunfemi007_java-deploy
-          -Dsonar.organization=olorunfemi007
-          -Dsonar.java.binaries=target
+      run: mvn -B clean compile sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} --file pom.xml
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Move WAR file to build context
