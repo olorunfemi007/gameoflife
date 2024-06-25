@@ -19,6 +19,7 @@
         <sonar.projectKey>olorunfemi007_java-deploy</sonar.projectKey>
         <my.env.var>${env.SONAR_TOKEN}</my.env.var>
         <sonar.token>${my.env.var}</sonar.token>
+        <sonar.java.binaries>=./target/classes</sonar.java.binaries>
     </properties>
 
     <scm>
