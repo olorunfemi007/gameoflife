@@ -63,7 +63,7 @@ jobs:
         distribution: 'temurin'   # ignore 
         cache: maven
     - name: Analysis with Sonarcloud
-      run: mvn -B clean compile -Dsonar.token=${{ secrets.SONAR_TOKEN }} --file pom.xml
+      run: mvn -B clean compile sonar:sonar -Dsonar.token=${{ secrets.SONAR_TOKEN }} --file pom.xml
     - name: Analysis with Sonarcloud
       uses: sonarsource/sonarqube-scan-action@master
       env:
@@ -71,9 +71,9 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       with:
         args: |
-          -Dsonar.projectKey=olorunfemi007_calculator-web-app
+          -Dsonar.projectKey=olorunfemi007_java-deploy
           -Dsonar.organization=olorunfemi007
-          -Dsonar.java.binaries=/home/runner/work/gameoflife/gameoflife/target/sonar
+          -Dsonar.java.binaries=/home/runner/work/gameoflife/gameoflife/target
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - name: Move WAR file to build context
