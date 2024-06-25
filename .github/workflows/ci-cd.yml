@@ -13,7 +13,6 @@ jobs:
       SECRET_NAME: 'ecrpullsecret'
       ECR_USERNAME: 'AWS'
       ECR_EMAIL: 'emmidim01@gmail.com'
-      SONAR_HOST_URL: 'https://sonarcloud.io/'
 
     steps:
     - name: Checkout Repo
